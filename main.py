@@ -1,0 +1,56 @@
+import pygame 
+import os 
+
+WIDTH,HEIGHT= 900,600
+WIN= pygame.display.set_mode((WIDTH,HEIGHT))
+pygame.display.set_caption("DVD logo screen")
+FPS= 60
+DVD_WIDTH, DVD_HEIGHT= 230,230
+DVD_IMAGE= pygame.image.load(os.path.join("Assets", "DVD_logo.png"))
+DVD= pygame.transform.scale(DVD_IMAGE,(DVD_WIDTH,DVD_HEIGHT))
+
+
+class obj:
+    def __init__(self, x, y):
+        self.x= x
+        self.y= y
+        self.x_vel= 3
+        self.y_vel= 3
+    def move(self):
+        self.y += self.y_vel
+        self.x += self.x_vel
+    def set_vel(self,x_vel,y_vel):
+        self.x_vel= x_vel 
+        self.y_vel= y_vel
+    def draw(self):
+        WIN.blit(DVD, (self.x, self.y))
+
+def draw(obj):
+    WIN.fill("black")
+    obj.draw()
+    pygame.display.update()
+
+def dvd_collision(dvd):
+    if dvd.x < 0 or dvd.x + DVD_WIDTH > WIDTH:
+        dvd.set_vel(dvd.x_vel*-1,dvd.y_vel)
+    if dvd.y + DVD_HEIGHT > HEIGHT or dvd.y + dvd.y_vel < 0:
+        dvd.set_vel(dvd.x_vel,dvd.y_vel*-1)    
+
+def main():
+    dvd= obj(0,0)
+    run= True
+    clock= pygame.time.Clock()
+    while run:
+        clock.tick(FPS)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run= False
+                break
+        dvd_collision(dvd)
+        dvd.move()
+        draw(dvd)
+    pygame.quit()
+    quit()
+
+if __name__ == "__main__":
+    main()
