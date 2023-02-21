@@ -1,14 +1,14 @@
 import pygame 
 import os 
+import random
 
 WIDTH,HEIGHT= 900,600
 WIN= pygame.display.set_mode((WIDTH,HEIGHT))
-pygame.display.set_caption("DVD logo screen")
+pygame.display.set_caption("DVD logo screensaver")
 FPS= 60
-DVD_WIDTH, DVD_HEIGHT= 230,230
-DVD_IMAGE= pygame.image.load(os.path.join("Assets", "DVD_logo.png"))
+DVD_WIDTH, DVD_HEIGHT= 270,150
+DVD_IMAGE= pygame.image.load("DVD_logo.png")
 DVD= pygame.transform.scale(DVD_IMAGE,(DVD_WIDTH,DVD_HEIGHT))
-
 
 class obj:
     def __init__(self, x, y):
@@ -33,11 +33,13 @@ def draw(obj):
 def dvd_collision(dvd):
     if dvd.x < 0 or dvd.x + DVD_WIDTH > WIDTH:
         dvd.set_vel(dvd.x_vel*-1,dvd.y_vel)
-    if dvd.y + DVD_HEIGHT > HEIGHT or dvd.y + dvd.y_vel < 0:
+    if dvd.y + DVD_HEIGHT > HEIGHT or dvd.y < 0:
         dvd.set_vel(dvd.x_vel,dvd.y_vel*-1)    
 
 def main():
-    dvd= obj(0,0)
+    start_x= random.randint(0,WIDTH/2)
+    start_y= random.randint(0,HEIGHT/2)
+    dvd= obj(start_x, start_y)
     run= True
     clock= pygame.time.Clock()
     while run:
